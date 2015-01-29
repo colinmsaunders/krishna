@@ -10,11 +10,13 @@ def rpn(code) :
         elif i in ('0','1','2','3','4','5','6','7','8','9') :
             stack.append(int(i))
         elif '-' == i :
-            stack.append(stack.pop() - stack.pop())
+            x = stack.pop()
+            stack.append(stack.pop() - x)
         elif '+' == i :
             stack.append(stack.pop() + stack.pop())
         elif '/' == i :
-            stack.append(stack.pop() // stack.pop())
+            x = stack.pop()
+            stack.append(stack.pop() / x)
         elif '*' == i :
             stack.append(stack.pop() * stack.pop())
         else :
@@ -37,19 +39,19 @@ if __name__ == '__main__' :
         for i in itertools.permutations(sys.argv[2]) :
             n += 1
             code = ''.join(i)
-            x = None
             try :
                 x = rpn(code)
-            except :
-                pass
-            if None == x :
-                s = 'ERR'
+                if 1 == len(x) :
+                    s = 'OK'
+                    y = x[0]
+                else :
+                    s = 'IND'
+                    y = '?'
+            except ZeroDivisionError :
+                s = 'DBZ'
                 y = '?'
-            elif 1 == len(x) :
-                s = 'OK'
-                y = x[0]
-            else :
-                s = 'IND'
+            except :
+                s = 'ERR'
                 y = '?'
             print '%d\t%s\t%s\t%s\t%s' % (n,code,s,y,str(x))
     else :
